@@ -50,7 +50,7 @@ contract ValidatorWithRewards {
 
             isSecretValidated[secretId] = true;
         }
-
+        isTokenValidated[tokenId] = true;
         rewardToken.safeTransfer(msg.sender, rewardAmount);
     }
 
@@ -62,7 +62,8 @@ contract ValidatorWithRewards {
         uint256 totalRewardAmount = 0;
 
         for (uint256 i = 0; i < tokenIds.length; ++i) {
-            if (isTokenValidated[tokenIds[i]]) {
+            uint tokenId = tokenIds[i];
+            if (isTokenValidated[tokenId]) {
                 continue;
             }
 
@@ -75,6 +76,7 @@ contract ValidatorWithRewards {
             } else {
                 totalRewardAmount += decryptedSecrets[i].length * rewardPerByte;
             }
+            isTokenValidated[tokenId] = true;
         }
 
         rewardToken.safeTransfer(msg.sender, totalRewardAmount);
